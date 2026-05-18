@@ -1,25 +1,29 @@
 {
   "name": "starzx",
   "version": "1.0.0",
-  "description": "Pixiz — publicité vidéo animée (Remotion)",
+  "description": "3D animation video built with Remotion and React Three Fiber",
   "scripts": {
     "dev": "remotion studio",
     "build": "remotion bundle",
-    "render": "remotion render PixizAd out/pixiz.mp4",
+    "render": "remotion render Scene out/scene.mp4",
     "upgrade": "remotion upgrade",
     "lint": "eslint src && tsc"
   },
   "repository": {},
   "license": "UNLICENSED",
   "dependencies": {
+    "@react-three/fiber": "^9.3.0",
     "@remotion/cli": "^4.0.0",
+    "@remotion/three": "^4.0.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "remotion": "^4.0.0"
+    "remotion": "^4.0.0",
+    "three": "^0.180.0"
   },
   "devDependencies": {
     "@remotion/eslint-config-flat": "^4.0.0",
     "@types/react": "19.2.7",
+    "@types/three": "^0.180.0",
     "@types/web": "0.0.166",
     "eslint": "9.19.0",
     "prettier": "3.8.1",

@@ -1,17 +1,17 @@
 import type { FC } from "react";
 import { Composition } from "remotion";
-import { PixizAd } from "./PixizAd";
+import { Scene } from "./Scene";
 
-// Publicité Pixiz — format vertical 1080×1920, 18 s à 30 fps (540 frames).
+// 3D animation — 1920×1080 landscape, 10 s at 30 fps (300 frames).
 export const RemotionRoot: FC = () => {
   return (
     <Composition
-      id="PixizAd"
-      component={PixizAd}
-      durationInFrames={540}
+      id="Scene"
+      component={Scene}
+      durationInFrames={300}
       fps={30}
-      width={1080}
-      height={1920}
+      width={1920}
+      height={1080}
     />
   );
 };

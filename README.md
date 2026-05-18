@@ -1,39 +1,37 @@
-# Pixiz — Publicité vidéo animée (Remotion)
+# 3D Animation — Remotion + React Three Fiber
 
-Publicité verticale **1080 × 1920 (9:16)**, **18 s à 30 fps** (540 frames),
-générée intégralement en code avec [Remotion](https://remotion.dev) — aucune
-ressource externe (formes, dégradés et typographie système uniquement).
+A landscape **1920 × 1080**, **10 s at 30 fps** (300 frames) 3D animation
+rendered entirely in code with [Remotion](https://remotion.dev) and
+[React Three Fiber](https://r3f.docs.pmnd.rs/) — no external assets.
 
-## Structure narrative
+## What's in the scene
 
-| Scène | Frames | Durée | Contenu |
-|-------|--------|-------|---------|
-| 1 — Accroche | 0 → 90 | 0–3 s | Une idée mal montée est une idée perdue |
-| 2 — Le constat | 90 → 210 | 3–7 s | Le montage décide de la rétention |
-| 3 — La réponse | 210 → 360 | 7–12 s | Pixiz et ses 6 compétences clés |
-| 4 — La preuve | 360 → 450 | 12–15 s | +50 vidéos, 1 an ½ d'expérience |
-| 5 — Call to action | 450 → 540 | 15–18 s | Promesse + invitation à contacter |
+- An orbiting camera that slowly dollies in toward the center.
+- A central torus knot with a continuously cycling hue.
+- A ring of 10 icosahedra orbiting the core, each entering on a staggered spring.
+- A seeded 1,800-point starfield with depth fog.
+- Two animated colored point lights plus a key directional light.
 
-Toute la composition tient dans `src/PixizAd.tsx`.
+The whole composition lives in `src/Scene.tsx`.
 
-## Commandes
+## Commands
 
-**Installer les dépendances**
+**Install dependencies**
 
 ```console
 npm install
 ```
 
-**Aperçu dans le Studio Remotion**
+**Preview in Remotion Studio**
 
 ```console
 npm run dev
 ```
 
-**Rendre la vidéo en MP4**
+**Render the video to MP4**
 
 ```console
-npx remotion render PixizAd out/pixiz.mp4
+npx remotion render Scene out/scene.mp4
 ```
 
-(raccourci équivalent : `npm run render`)
+(equivalent shortcut: `npm run render`)
