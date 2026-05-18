@@ -1,61 +1,39 @@
-# Remotion + React Three Fiber Starter Template
+# Pixiz — Publicité vidéo animée (Remotion)
 
-<p align="center">
-    <img src="demo.gif" style="border-radius: 5px">
-</p>
+Publicité verticale **1080 × 1920 (9:16)**, **18 s à 30 fps** (540 frames),
+générée intégralement en code avec [Remotion](https://remotion.dev) — aucune
+ressource externe (formes, dégradés et typographie système uniquement).
 
-[This is a template repository, click "Use this template" to create a repository based off this template!](https://github.com/JonnyBurger/remotion-template-three/generate)
+## Structure narrative
 
-This is a lightweight boilerplate for [Remotion](https://github.com/jonnyburger/remotion) with [React Three Fiber](https://github.com/pmndrs/react-three-fiber) and [@remotion/three](http://remotion.dev/docs/three) preinstalled.
+| Scène | Frames | Durée | Contenu |
+|-------|--------|-------|---------|
+| 1 — Accroche | 0 → 90 | 0–3 s | Une idée mal montée est une idée perdue |
+| 2 — Le constat | 90 → 210 | 3–7 s | Le montage décide de la rétention |
+| 3 — La réponse | 210 → 360 | 7–12 s | Pixiz et ses 6 compétences clés |
+| 4 — La preuve | 360 → 450 | 12–15 s | +50 vidéos, 1 an ½ d'expérience |
+| 5 — Call to action | 450 → 540 | 15–18 s | Promesse + invitation à contacter |
 
-- [Remotion documentation](https://remotion.dev)
-- [React Three Fiber documentation](https://docs.pmnd.rs/react-three-fiber)
-- [@remotion/three documentation](http://remotion.dev/docs/three)
+Toute la composition tient dans `src/PixizAd.tsx`.
 
-This example features a phone with a screen. You can easily switch out the video and change a series of parameters, like size, color, aspect ratio, corner radius etc. of the phone.
+## Commandes
 
-You can also simply delete everything inside the canvas to start off with your own 3D project.
-
-## Commands
-
-**Install Dependencies**
+**Installer les dépendances**
 
 ```console
 npm install
 ```
 
-**Start Preview**
+**Aperçu dans le Studio Remotion**
 
 ```console
 npm run dev
 ```
 
-**Render MP4 video**
+**Rendre la vidéo en MP4**
 
 ```console
-npx remotion render
+npx remotion render PixizAd out/pixiz.mp4
 ```
 
-**Upgrade Remotion**
-
-```console
-npx remotion upgrade
-```
-
-## Docs
-
-Get started with Remotion by reading the [fundamentals page](https://www.remotion.dev/docs/the-fundamentals).
-
-## Help
-
-We provide help on our [Discord server](https://discord.gg/6VzzNDwUwV).
-
-## Issues
-
-Found an issue with Remotion? [File an issue here](https://github.com/JonnyBurger/remotion/issues/new).
-
-## License
-
-Note that for some entities a company license is needed. [Read the terms here](https://github.com/remotion-dev/remotion/blob/main/LICENSE.md).
-
-The content of this template is licensed under MIT.
+(raccourci équivalent : `npm run render`)
