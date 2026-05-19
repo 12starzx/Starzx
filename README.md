@@ -1,54 +1,56 @@
-# Pinguino — Promo Discord (Remotion + React Three Fiber)
+# Pinguino — Promo verticale néon (Remotion)
 
-Vertical promo video **1080 × 1920 (9:16)**, **18 s at 30 fps** (540 frames),
-built entirely in code with [Remotion](https://remotion.dev) and
-[React Three Fiber](https://r3f.docs.pmnd.rs/) — no external assets.
+Edit promo dynamique **1080 × 1920 (9:16)**, **30 s à 60 fps** (1800 frames),
+généré intégralement en React/CSS avec [Remotion](https://remotion.dev) —
+aucune dépendance 3D, aucun asset externe.
 
-Designed to drive traffic to the **Pinguino | MiddleMan** Discord:
-`discord.gg/NRsafWSgUr`.
+Style : cyan / bleu électrique, textes 3D biseautés avec glow néon, grille
+en perspective, particules lumineuses, transitions flash franches entre les
+plans.
 
-## Structure
+## Découpage des 7 plans (60 fps)
 
-A live 3D scene (orbiting camera, hue-cycling torus knot, ring of icosahedra,
-seeded starfield) plays behind an overlay layer: an animated corner-bracket
-frame, a server badge, a segmented progress bar, and six subtitle cards.
+| Plan | Frames | Durée | Contenu |
+|------|--------|-------|---------|
+| 1 — Hook | 0 → 180 | 0–3 s | « SALUT » pop avec rebond sur grille perspective |
+| 2 — Accueil | 180 → 360 | 3–6 s | « BIENVENUE » jaillit vers la caméra |
+| 3 — Marque | 360 → 600 | 6–10 s | Cercle néon pulsant + « PINGUINO » |
+| 4 — Service | 600 → 840 | 10–14 s | « MIDDLE MAN DE CONFIANCE » |
+| 5 — Vibes | 840 → 1140 | 14–19 s | Flash : Vocaux actifs / Ambiance non-stop / Communauté sérieuse |
+| 6 — CTA | 1140 → 1440 | 19–24 s | Zoom avant « REJOINS-NOUS MAINTENANT » |
+| 7 — Lien | 1440 → 1800 | 24–30 s | Cercle néon + « LIEN EN BIO » |
 
-| Card | Frames | Message |
-|------|--------|---------|
-| 1 — Hook | 0 → 90 | Rejoins Pinguino |
-| 2 — Vocaux | 90 → 180 | Vocaux actifs tous les jours |
-| 3 — Brainrot | 180 → 270 | Infos & leaks Steal a Brainrot |
-| 4 — Service | 270 → 360 | Middleman sécurisé |
-| 5 — Giveaway | 360 → 450 | Un Garama color à gagner |
-| 6 — CTA | 450 → 540 | discord.gg/NRsafWSgUr — lien en bio |
+Éléments récurrents sur toute la vidéo : particules cyan en fond, glow
+ambiant permanent, léger tremblement des textes au rythme, flash blanc au
+début de chaque plan.
 
-Each subtitle card animates: glowing emoji with orbiting dots, a
-character-by-character title reveal, a growing underline and a sub-line.
+Toute la composition tient dans `src/Scene.tsx`.
 
-The composition lives in `src/Scene.tsx`; the 3D background in
-`src/ThreeBackground.tsx`.
+## Audio
 
-## Commands
+Le projet est sans son volontairement, mais structuré pour pouvoir en
+ajouter un facilement. Voir le commentaire au-dessus du composant `Scene`
+dans `src/Scene.tsx` : il suffit de dé-commenter deux lignes et déposer un
+fichier dans `public/`.
 
-**Install dependencies**
+## Commandes
+
+**Installer les dépendances**
 
 ```console
 npm install
 ```
 
-**Preview in Remotion Studio**
+**Aperçu dans le Studio Remotion**
 
 ```console
 npm run dev
 ```
 
-**Render the video to MP4**
+**Rendre la vidéo en MP4**
 
 ```console
 npx remotion render Scene out/scene.mp4
 ```
 
-(equivalent shortcut: `npm run render`)
-
-To edit the script, message text or colors, change the `SEGMENTS` array at the
-top of `src/Scene.tsx`.
+(raccourci équivalent : `npm run render`)
