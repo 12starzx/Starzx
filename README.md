@@ -1,18 +1,32 @@
-# 3D Animation — Remotion + React Three Fiber
+# Pinguino — Promo Discord (Remotion + React Three Fiber)
 
-A landscape **1920 × 1080**, **10 s at 30 fps** (300 frames) 3D animation
-rendered entirely in code with [Remotion](https://remotion.dev) and
+Vertical promo video **1080 × 1920 (9:16)**, **18 s at 30 fps** (540 frames),
+built entirely in code with [Remotion](https://remotion.dev) and
 [React Three Fiber](https://r3f.docs.pmnd.rs/) — no external assets.
 
-## What's in the scene
+Designed to drive traffic to the **Pinguino | MiddleMan** Discord:
+`discord.gg/NRsafWSgUr`.
 
-- An orbiting camera that slowly dollies in toward the center.
-- A central torus knot with a continuously cycling hue.
-- A ring of 10 icosahedra orbiting the core, each entering on a staggered spring.
-- A seeded 1,800-point starfield with depth fog.
-- Two animated colored point lights plus a key directional light.
+## Structure
 
-The whole composition lives in `src/Scene.tsx`.
+A live 3D scene (orbiting camera, hue-cycling torus knot, ring of icosahedra,
+seeded starfield) plays behind an overlay layer: an animated corner-bracket
+frame, a server badge, a segmented progress bar, and six subtitle cards.
+
+| Card | Frames | Message |
+|------|--------|---------|
+| 1 — Hook | 0 → 90 | Rejoins Pinguino |
+| 2 — Vocaux | 90 → 180 | Vocaux actifs tous les jours |
+| 3 — Brainrot | 180 → 270 | Infos & leaks Steal a Brainrot |
+| 4 — Service | 270 → 360 | Middleman sécurisé |
+| 5 — Giveaway | 360 → 450 | Un Garama color à gagner |
+| 6 — CTA | 450 → 540 | discord.gg/NRsafWSgUr — lien en bio |
+
+Each subtitle card animates: glowing emoji with orbiting dots, a
+character-by-character title reveal, a growing underline and a sub-line.
+
+The composition lives in `src/Scene.tsx`; the 3D background in
+`src/ThreeBackground.tsx`.
 
 ## Commands
 
@@ -35,3 +49,6 @@ npx remotion render Scene out/scene.mp4
 ```
 
 (equivalent shortcut: `npm run render`)
+
+To edit the script, message text or colors, change the `SEGMENTS` array at the
+top of `src/Scene.tsx`.

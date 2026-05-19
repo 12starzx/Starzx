@@ -1,7 +1,7 @@
 {
   "name": "starzx",
   "version": "1.0.0",
-  "description": "3D animation video built with Remotion and React Three Fiber",
+  "description": "Pinguino Discord promo video built with Remotion and React Three Fiber",
   "scripts": {
     "dev": "remotion studio",
     "build": "remotion bundle",

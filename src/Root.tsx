@@ -1,17 +1,17 @@
 import type { FC } from "react";
 import { Composition } from "remotion";
-import { Scene } from "./Scene";
+import { Scene, TOTAL } from "./Scene";
 
-// 3D animation — 1920×1080 landscape, 10 s at 30 fps (300 frames).
+// Pinguino — promo Discord verticale 1080×1920, 18 s à 30 fps (540 frames).
 export const RemotionRoot: FC = () => {
   return (
     <Composition
       id="Scene"
       component={Scene}
-      durationInFrames={300}
+      durationInFrames={TOTAL}
       fps={30}
-      width={1920}
-      height={1080}
+      width={1080}
+      height={1920}
     />
   );
 };
