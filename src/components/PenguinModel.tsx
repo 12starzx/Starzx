@@ -99,7 +99,7 @@ export const PenguinModel: FC<PenguinModelProps> = ({
     case "slide":
       // Rotation Y croissante + léger ballant (le déplacement X est
       // fourni par le parent via la prop `position`).
-      rotY += local * 0.03;
+      rotY += local * 0.01;
       posY += Math.sin(t * TAU * 2) * 0.05;
       break;
     case "point":

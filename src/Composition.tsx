@@ -1,5 +1,11 @@
 import type { FC } from "react";
 import { AbsoluteFill, Sequence } from "remotion";
+import { Plan1 } from "./plans/Plan1";
+import { Plan2 } from "./plans/Plan2";
+import { Plan3 } from "./plans/Plan3";
+import { Plan4 } from "./plans/Plan4";
+import { Plan5 } from "./plans/Plan5";
+import { Plan6 } from "./plans/Plan6";
 
 // --- Paramètres globaux de la vidéo -------------------------------------
 export const VIDEO_FPS = 60;
@@ -13,9 +19,7 @@ export const PLAN_DURATION = 150;
 /**
  * Composition principale "Scene".
  *
- * Les 12 Sequence sont vides pour l'instant. Leur contenu sera ajouté :
- *   - bloc 2 → plans 1 à 6
- *   - bloc 3 → plans 7 à 12
+ * Plans 1 à 6 implémentés (bloc 2). Plans 7 à 12 : bloc 3.
  */
 export const Scene: FC = () => {
   return (
@@ -29,32 +33,32 @@ export const Scene: FC = () => {
 
       {/* ───── PLAN 1 · SALUT · frames 0–150 ───── */}
       <Sequence durationInFrames={PLAN_DURATION} name="P01 · SALUT">
-        {/* Contenu ajouté au bloc 2 */}
+        <Plan1 />
       </Sequence>
 
       {/* ───── PLAN 2 · BIENVENUE · frames 150–300 ───── */}
       <Sequence from={150} durationInFrames={PLAN_DURATION} name="P02 · BIENVENUE">
-        {/* Contenu ajouté au bloc 2 */}
+        <Plan2 />
       </Sequence>
 
       {/* ───── PLAN 3 · SUR PINGUINO · frames 300–450 ───── */}
       <Sequence from={300} durationInFrames={PLAN_DURATION} name="P03 · SUR PINGUINO">
-        {/* Contenu ajouté au bloc 2 */}
+        <Plan3 />
       </Sequence>
 
       {/* ───── PLAN 4 · LE SERVEUR N°1 · frames 450–600 ───── */}
       <Sequence from={450} durationInFrames={PLAN_DURATION} name="P04 · LE SERVEUR N°1">
-        {/* Contenu ajouté au bloc 2 */}
+        <Plan4 />
       </Sequence>
 
       {/* ───── PLAN 5 · AMBIANCE NON-STOP · frames 600–750 ───── */}
       <Sequence from={600} durationInFrames={PLAN_DURATION} name="P05 · AMBIANCE NON-STOP">
-        {/* Contenu ajouté au bloc 2 */}
+        <Plan5 />
       </Sequence>
 
       {/* ───── PLAN 6 · VOCAUX ACTIFS 24/7 · frames 750–900 ───── */}
       <Sequence from={750} durationInFrames={PLAN_DURATION} name="P06 · VOCAUX ACTIFS 24/7">
-        {/* Contenu ajouté au bloc 2 */}
+        <Plan6 />
       </Sequence>
 
       {/* ───── PLAN 7 · COMMUNAUTÉ SÉRIEUSE · frames 900–1050 ───── */}
