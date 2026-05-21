@@ -8,6 +8,11 @@ export interface Text3DProps {
   text: string;
   /** Si vrai (défaut), le texte oscille verticalement en continu. */
   oscillate?: boolean;
+  /**
+   * Force le rayon (px) du glow néon. Si omis, le glow pulse de
+   * 20px à 40px à 2 Hz (comportement par défaut).
+   */
+  glowBlur?: number;
 }
 
 /**
@@ -17,13 +22,17 @@ export interface Text3DProps {
  * Animations pilotées par `useCurrentFrame` de Remotion — aucune
  * dépendance à une boucle d'animation externe.
  */
-export const Text3D: FC<Text3DProps> = ({ text, oscillate = true }) => {
+export const Text3D: FC<Text3DProps> = ({
+  text,
+  oscillate = true,
+  glowBlur,
+}) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const seconds = frame / fps;
 
-  // Glow externe : blur oscillant 20px ↔ 40px à 2 Hz.
-  const glowBlur = 30 + 10 * Math.sin(seconds * TAU * 2);
+  // Glow externe : blur oscillant 20px ↔ 40px à 2 Hz (sauf override).
+  const blur = glowBlur ?? 30 + 10 * Math.sin(seconds * TAU * 2);
 
   // Oscillation verticale ±4px à 1,5 Hz.
   const offsetY = oscillate ? Math.sin(seconds * TAU * 1.5) * 4 : 0;
@@ -53,7 +62,7 @@ export const Text3D: FC<Text3DProps> = ({ text, oscillate = true }) => {
         color: "transparent",
         WebkitTextFillColor: "transparent",
         textShadow: bevel,
-        filter: `drop-shadow(0 0 ${glowBlur}px #00E5FF)`,
+        filter: `drop-shadow(0 0 ${blur}px #00E5FF)`,
         transform: `translateY(${offsetY}px)`,
       }}
     >

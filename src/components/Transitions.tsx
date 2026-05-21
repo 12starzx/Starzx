@@ -4,19 +4,22 @@ import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 export interface FlashOverlayProps {
   /** Couleur du flash (ex. "#FFFFFF", "#00E5FF", "#FF0000"). */
   color: string;
-  /** Frame (locale à la Sequence) du début du flash. */
+  /** Frame (locale au contexte de rendu) du début du flash. */
   startFrame: number;
   /** Durée totale du flash en frames. */
   durationFrames: number;
+  /** Opacité maximale atteinte au pic (défaut 1). */
+  maxOpacity?: number;
 }
 
 /**
- * Flash plein écran : opacité 0 → 1 → 0 sur `durationFrames`.
+ * Flash plein écran : opacité 0 → maxOpacity → 0 sur `durationFrames`.
  */
 export const FlashOverlay: FC<FlashOverlayProps> = ({
   color,
   startFrame,
   durationFrames,
+  maxOpacity = 1,
 }) => {
   const frame = useCurrentFrame();
   const opacity = interpolate(
@@ -26,7 +29,7 @@ export const FlashOverlay: FC<FlashOverlayProps> = ({
       startFrame + durationFrames / 2,
       startFrame + durationFrames,
     ],
-    [0, 1, 0],
+    [0, maxOpacity, 0],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
   );
 

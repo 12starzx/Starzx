@@ -46,8 +46,9 @@ export const PerspectiveGrid: FC<{ animateZ?: boolean }> = ({
 
 /**
  * Grand cercle néon central, légèrement pulsant (scale 0.95 ↔ 1.05 à 2 Hz).
+ * `glow` règle le rayon (px) du halo extérieur (défaut 60).
  */
-export const NeonCircle: FC = () => {
+export const NeonCircle: FC<{ glow?: number }> = ({ glow = 60 }) => {
   const frame = useCurrentFrame();
   const { fps, width } = useVideoConfig();
   const seconds = frame / fps;
@@ -73,7 +74,7 @@ export const NeonCircle: FC = () => {
           height: size,
           borderRadius: "50%",
           border: "4px solid #00E5FF",
-          boxShadow: "0 0 60px #00E5FF, inset 0 0 40px #00B8D4",
+          boxShadow: `0 0 ${glow}px #00E5FF, inset 0 0 40px #00B8D4`,
           transform: `scale(${scale})`,
         }}
       />
@@ -230,11 +231,15 @@ export const CssHand: FC = () => {
 /**
  * Particules cyan ascendantes — `count` points lumineux qui montent en
  * boucle ; position X déterministe (seedée par index, donc stable d'une
- * frame à l'autre).
+ * frame à l'autre). `periodFrames` règle la vitesse (plus petit = plus
+ * rapide ; défaut 150).
  */
-export const AscendingParticles: FC<{ count?: number }> = ({ count = 10 }) => {
+export const AscendingParticles: FC<{
+  count?: number;
+  periodFrames?: number;
+}> = ({ count = 10, periodFrames = 150 }) => {
   const frame = useCurrentFrame();
-  const period = 150;
+  const period = periodFrames;
 
   return (
     <AbsoluteFill style={{ pointerEvents: "none" }}>
@@ -263,5 +268,96 @@ export const AscendingParticles: FC<{ count?: number }> = ({ count = 10 }) => {
         );
       })}
     </AbsoluteFill>
+  );
+};
+
+/**
+ * Main néon « paume ouverte » (geste STOP). S'anime elle-même :
+ * descend (0–25), tremble (25–33), reste en place, puis remonte
+ * (130–150). Frame locale au contexte de rendu.
+ */
+export const CssHandStop: FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  const drop = spring({ frame, fps, config: { damping: 14, stiffness: 110 } });
+  const descend = interpolate(drop, [0, 1], [-100, 10]);
+  const ascend = interpolate(frame, [130, 150], [0, -110], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const translateY = descend + ascend;
+
+  // Tremblement horizontal déterministe entre les frames 25 et 33.
+  const shake =
+    frame >= 25 && frame <= 33
+      ? random(`stop-shake-${Math.floor(frame)}`) * 16 - 8
+      : 0;
+
+  const finger = (left: number) => ({
+    position: "absolute" as const,
+    top: 0,
+    left,
+    width: 48,
+    height: 168,
+    background: HAND_GRADIENT,
+    borderRadius: 26,
+  });
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: 0,
+        left: "50%",
+        transform: `translateX(calc(-50% + ${shake}px)) translateY(${translateY}%)`,
+        filter: "drop-shadow(0 0 40px #00E5FF)",
+      }}
+    >
+      <div style={{ position: "relative", width: 320, height: 490 }}>
+        {/* 4 doigts levés */}
+        <div style={finger(56)} />
+        <div style={finger(110)} />
+        <div style={finger(164)} />
+        <div style={finger(218)} />
+        {/* paume */}
+        <div
+          style={{
+            position: "absolute",
+            top: 150,
+            left: 44,
+            width: 236,
+            height: 188,
+            background: HAND_GRADIENT,
+            borderRadius: 58,
+          }}
+        />
+        {/* pouce */}
+        <div
+          style={{
+            position: "absolute",
+            top: 200,
+            left: -4,
+            width: 66,
+            height: 122,
+            background: HAND_GRADIENT,
+            borderRadius: 34,
+            transform: "rotate(-26deg)",
+          }}
+        />
+        {/* poignet */}
+        <div
+          style={{
+            position: "absolute",
+            top: 322,
+            left: 116,
+            width: 96,
+            height: 96,
+            background: HAND_GRADIENT,
+            borderRadius: "30px 30px 40px 40px",
+          }}
+        />
+      </div>
+    </div>
   );
 };
