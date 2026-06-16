@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0A1F17" />
+  <title>VERDÆ — Le tourisme qui régénère la Terre</title>
+  <meta name="description" content="VERDÆ — Plateforme premium de tourisme vert. Explorez des destinations régénératrices en 3D immersive, planifiez avec une IA et voyagez en laissant la planète plus belle." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- Import map : Three.js servi en ESM depuis un CDN -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <!-- ░░░ PRELOADER ░░░ -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader__mark">
+      <svg viewBox="0 0 100 100" class="loader__leaf"><path d="M50 6C30 22 16 40 16 60a34 34 0 0 0 68 0c0-20-14-38-34-54Z"/></svg>
+    </div>
+    <div class="loader__bar"><span id="loaderFill"></span></div>
+    <div class="loader__pct"><span id="loaderPct">0</span>%</div>
+    <div class="loader__brand">VERDÆ</div>
+  </div>
+
+  <!-- ░░░ CURSEUR PERSONNALISÉ ░░░ -->
+  <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__dot"></div></div>
+
+  <!-- ░░░ BARRE DE PROGRESSION SCROLL ░░░ -->
+  <div class="scrollbar" id="scrollbar" aria-hidden="true"></div>
+
+  <!-- ░░░ CANVAS 3D GLOBAL (hero scene) ░░░ -->
+  <canvas id="scene" class="scene" aria-hidden="true"></canvas>
+
+  <!-- ░░░ NAVIGATION ░░░ -->
+  <header class="nav" id="nav">
+    <a class="nav__brand" href="#hero" data-magnetic>
+      <svg viewBox="0 0 100 100" class="nav__leaf"><path d="M50 6C30 22 16 40 16 60a34 34 0 0 0 68 0c0-20-14-38-34-54Z"/></svg>
+      <span>VERDÆ</span>
+    </a>
+    <nav class="nav__links" aria-label="Navigation principale">
+      <a href="#concept" data-link>Concept</a>
+      <a href="#explore" data-link>Explorer</a>
+      <a href="#experiences" data-link>Expériences</a>
+      <a href="#stays" data-link>Séjours</a>
+      <a href="#globe" data-link>Carte 3D</a>
+    </nav>
+    <div class="nav__actions">
+      <button class="btn btn--ghost" data-magnetic id="langBtn">FR</button>
+      <a class="btn btn--solid" href="#cta" data-magnetic>Commencer<span class="btn__arrow">→</span></a>
+    </div>
+    <button class="nav__burger" id="burger" aria-label="Ouvrir le menu"><span></span><span></span></button>
+  </header>
+
+  <main>
+    <!-- ░░░ 1 · HERO ░░░ -->
+    <section class="hero" id="hero">
+      <div class="hero__inner">
+        <div class="hero__eyebrow reveal"><span class="pulse"></span>Tourisme régénératif · Saison 2026</div>
+        <h1 class="hero__title">
+          <span class="line"><span>Voyagez en laissant</span></span>
+          <span class="line"><span>la Terre <em>plus belle.</em></span></span>
+        </h1>
+        <p class="hero__lead reveal">Des vallées brumeuses aux forêts primaires, VERDÆ orchestre des séjours
+          qui restaurent les écosystèmes. Explorez en 3D, planifiez avec l'IA, partez sans trace.</p>
+        <div class="hero__cta reveal">
+          <a class="btn btn--solid btn--lg" href="#explore" data-magnetic>Explorer les mondes<span class="btn__arrow">→</span></a>
+          <button class="btn btn--line btn--lg" data-magnetic id="playFilm"><span class="btn__play">▶</span>Voir le film</button>
+        </div>
+        <div class="hero__stats reveal">
+          <div><strong data-count="214">0</strong><span>destinations régénératrices</span></div>
+          <div><strong data-count="38">0</strong><span>pays · 6 continents</span></div>
+          <div><strong data-count="100">0</strong><span>% séjours bas-carbone</span></div>
+        </div>
+      </div>
+      <div class="hero__scroll" aria-hidden="true"><span>Défiler</span><i></i></div>
+      <div class="hero__loc" aria-hidden="true">46.51°N · 9.84°E<br/>Val Verdæ — Alpes</div>
+    </section>
+
+    <!-- ░░░ 2 · MARQUEE ░░░ -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span>FORÊTS PRIMAIRES</span><i>✦</i><span>LACS GLACIAIRES</span><i>✦</i><span>REFUGES SOLAIRES</span><i>✦</i><span>MOBILITÉ DOUCE</span><i>✦</i><span>FAUNE PRÉSERVÉE</span><i>✦</i>
+        <span>FORÊTS PRIMAIRES</span><i>✦</i><span>LACS GLACIAIRES</span><i>✦</i><span>REFUGES SOLAIRES</span><i>✦</i><span>MOBILITÉ DOUCE</span><i>✦</i><span>FAUNE PRÉSERVÉE</span><i>✦</i>
+      </div>
+    </div>
+
+    <!-- ░░░ 3 · CONCEPT ░░░ -->
+    <section class="concept" id="concept">
+      <div class="concept__head">
+        <span class="kicker reveal">Le concept</span>
+        <h2 class="reveal">Le premier voyage à <em>empreinte positive.</em></h2>
+        <p class="reveal">VERDÆ ne compense pas vos émissions — il les inverse. Chaque séjour finance la
+          restauration mesurée d'un écosystème réel, suivie en temps réel depuis votre poche.</p>
+      </div>
+      <div class="concept__grid">
+        <article class="ccard reveal" data-tilt>
+          <div class="ccard__num">01</div>
+          <h3>Restauration mesurée</h3>
+          <p>Hectares replantés, CO₂ séquestré, biodiversité comptée. Un dashboard satellite relie votre voyage à des données vérifiées.</p>
+          <div class="ccard__glow"></div>
+        </article>
+        <article class="ccard reveal" data-tilt>
+          <div class="ccard__num">02</div>
+          <h3>Immersion avant le départ</h3>
+          <p>Survolez votre destination en 3D photoréaliste, entrez dans le chalet, écoutez la forêt — avant même de réserver.</p>
+          <div class="ccard__glow"></div>
+        </article>
+        <article class="ccard reveal" data-tilt>
+          <div class="ccard__num">03</div>
+          <h3>IA régénérative</h3>
+          <p>Sylvie, votre guide IA, compose un itinéraire bas-carbone selon vos envies, la météo et la capacité d'accueil des sites.</p>
+          <div class="ccard__glow"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ░░░ 4 · EXPLORER / RECHERCHE ░░░ -->
+    <section class="explore" id="explore">
+      <div class="explore__head">
+        <span class="kicker reveal">Recherche immersive</span>
+        <h2 class="reveal">Dites une envie.<br/><em>Recevez un monde.</em></h2>
+      </div>
+      <div class="searchbar reveal" data-tilt>
+        <div class="searchbar__field">
+          <label>Envie</label>
+          <input type="text" value="Silence et forêt brumeuse" readonly />
+        </div>
+        <div class="searchbar__field">
+          <label>Quand</label>
+          <input type="text" value="Octobre · 5 nuits" readonly />
+        </div>
+        <div class="searchbar__field">
+          <label>Empreinte</label>
+          <input type="text" value="Positive · +2 ha replantés" readonly />
+        </div>
+        <button class="searchbar__go" data-magnetic aria-label="Rechercher">⌕</button>
+        <div class="searchbar__shine"></div>
+      </div>
+      <div class="dest" id="destTrack">
+        <!-- cartes injectées par JS -->
+      </div>
+    </section>
+
+    <!-- ░░░ 5 · EXPÉRIENCES ÉCOLOGIQUES ░░░ -->
+    <section class="exp" id="experiences">
+      <div class="exp__head">
+        <span class="kicker reveal">Expériences vivantes</span>
+        <h2 class="reveal">Des aventures qui <em>réparent.</em></h2>
+        <p class="reveal">Chaque expérience est notée sur son impact régénératif réel — pas sur un slogan.</p>
+      </div>
+      <div class="exp__grid" id="expGrid"><!-- injecté --></div>
+    </section>
+
+    <!-- ░░░ 6 · HÉBERGEMENTS ░░░ -->
+    <section class="stays" id="stays">
+      <div class="stays__sticky">
+        <span class="kicker reveal">Refuges signature</span>
+        <h2 class="reveal">Dormir <em>dans</em> le paysage,<br/>pas devant.</h2>
+        <p class="reveal">Une collection d'hébergements à énergie positive, posés sans béton, démontables sans trace.</p>
+        <ul class="stays__list" id="staysList"></ul>
+      </div>
+      <div class="stays__visual">
+        <div class="stays__frame" id="stayVisual">
+          <div class="stays__badge"><span class="pulse"></span>Énergie positive · 117%</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░░ 7 · GLOBE 3D ░░░ -->
+    <section class="globe" id="globe">
+      <div class="globe__copy">
+        <span class="kicker reveal">Carte vivante</span>
+        <h2 class="reveal">Un globe qui <em>respire.</em></h2>
+        <p class="reveal">Chaque point lumineux est un écosystème en restauration active. Les arcs tracent
+          les flux de voyageurs régénérateurs en temps réel.</p>
+        <div class="globe__legend reveal">
+          <div><i class="dot dot--green"></i>Restauration active</div>
+          <div><i class="dot dot--gold"></i>Nouveau refuge</div>
+          <div><i class="dot dot--teal"></i>Flux voyageurs</div>
+        </div>
+        <div class="globe__counter reveal">
+          <strong data-count="1284390">0</strong><span>hectares en régénération suivis en direct</span>
+        </div>
+      </div>
+      <canvas id="globeCanvas" class="globe__canvas" aria-label="Globe terrestre interactif"></canvas>
+    </section>
+
+    <!-- ░░░ 8 · FONCTIONNALITÉS INNOVANTES ░░░ -->
+    <section class="feats" id="feats">
+      <div class="feats__head">
+        <span class="kicker reveal">Venu du futur</span>
+        <h2 class="reveal">Six technologies qui changent <em>tout.</em></h2>
+      </div>
+      <div class="feats__grid">
+        <article class="feat reveal" data-tilt><span class="feat__ic">◐</span><h3>Voyage virtuel WebGL</h3><p>Téléportez-vous dans chaque site en 3D temps réel, lumière du jour réelle, son spatialisé.</p></article>
+        <article class="feat reveal" data-tilt><span class="feat__ic">✶</span><h3>Sylvie, l'IA guide</h3><p>Itinéraires bas-carbone générés en langage naturel, ajustés à la météo et à la fréquentation.</p></article>
+        <article class="feat reveal" data-tilt><span class="feat__ic">⬡</span><h3>Réalité augmentée terrain</h3><p>Pointez votre téléphone : noms d'espèces, sentiers, histoire géologique surgissent du réel.</p></article>
+        <article class="feat reveal" data-tilt><span class="feat__ic">◉</span><h3>Empreinte en direct</h3><p>Capteurs satellites + IoT : votre impact positif se met à jour pendant et après le séjour.</p></article>
+        <article class="feat reveal" data-tilt><span class="feat__ic">⟁</span><h3>Mobilité douce intégrée</h3><p>Train, vélo électrique, navette solaire réservés en un flux, sans rupture, sans voiture.</p></article>
+        <article class="feat reveal" data-tilt><span class="feat__ic">❖</span><h3>Passeport régénératif</h3><p>Un carnet vivant qui certifie chaque hectare restauré à votre nom, partageable et infalsifiable.</p></article>
+      </div>
+    </section>
+
+    <!-- ░░░ 9 · STATISTIQUES ░░░ -->
+    <section class="stats" id="stats">
+      <div class="stats__grid">
+        <div class="stats__cell reveal"><strong data-count="1284390" data-suffix=" ha">0</strong><span>écosystèmes en régénération</span></div>
+        <div class="stats__cell reveal"><strong data-count="92" data-suffix="%">0</strong><span>voyageurs repartent ambassadeurs</span></div>
+        <div class="stats__cell reveal"><strong data-count="48000" data-suffix="t">0</strong><span>CO₂ séquestré net / an</span></div>
+        <div class="stats__cell reveal"><strong data-count="4.96" data-decimals="2" data-suffix="/5">0</strong><span>note moyenne · 31k avis</span></div>
+      </div>
+    </section>
+
+    <!-- ░░░ 10 · TÉMOIGNAGES ░░░ -->
+    <section class="quotes" id="quotes">
+      <div class="quotes__head">
+        <span class="kicker reveal">Voix du voyage</span>
+        <h2 class="reveal">Ils sont revenus <em>changés.</em></h2>
+      </div>
+      <div class="quotes__rail" id="quotesRail"><!-- injecté --></div>
+    </section>
+
+    <!-- ░░░ 11 · CALL TO ACTION ░░░ -->
+    <section class="cta" id="cta">
+      <div class="cta__halo"></div>
+      <div class="cta__inner reveal">
+        <span class="kicker">Votre tour</span>
+        <h2>Et si votre prochain voyage<br/><em>guérissait un bout de monde ?</em></h2>
+        <p>Rejoignez les premiers explorateurs régénérateurs. Accès anticipé, séjour fondateur offert.</p>
+        <form class="cta__form" id="ctaForm" onsubmit="return false">
+          <input type="email" placeholder="vous@exemple.com" aria-label="Votre e-mail" required />
+          <button class="btn btn--solid btn--lg" data-magnetic type="submit">Recevoir mon accès<span class="btn__arrow">→</span></button>
+        </form>
+        <small class="cta__note">Sans engagement · 1 e-mail / mois · Désinscription en un clic.</small>
+      </div>
+    </section>
+  </main>
+
+  <!-- ░░░ FOOTER ░░░ -->
+  <footer class="foot">
+    <div class="foot__top">
+      <div class="foot__brand">
+        <svg viewBox="0 0 100 100" class="nav__leaf"><path d="M50 6C30 22 16 40 16 60a34 34 0 0 0 68 0c0-20-14-38-34-54Z"/></svg>
+        <span>VERDÆ</span>
+        <p>Le tourisme qui régénère la Terre.</p>
+      </div>
+      <div class="foot__cols">
+        <div><h4>Explorer</h4><a href="#explore">Destinations</a><a href="#experiences">Expériences</a><a href="#stays">Refuges</a><a href="#globe">Carte 3D</a></div>
+        <div><h4>Plateforme</h4><a href="#feats">IA Sylvie</a><a href="#feats">Réalité augmentée</a><a href="#feats">Passeport régénératif</a><a href="#stats">Impact</a></div>
+        <div><h4>Agence</h4><a href="#concept">Manifeste</a><a href="#cta">Investisseurs</a><a href="#cta">Presse</a><a href="#cta">Carrières</a></div>
+      </div>
+    </div>
+    <div class="foot__bottom">
+      <span>© 2026 VERDÆ — Conçu pour laisser la Terre plus belle.</span>
+      <span class="foot__made">Fait avec WebGL, lumière & Three.js</span>
+    </div>
+  </footer>
+
+  <script type="module" src="js/data.js"></script>
+  <script type="module" src="js/scene.js"></script>
+  <script type="module" src="js/globe.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
