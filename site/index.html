@@ -12,12 +12,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
 
-  <!-- Import map : Three.js servi en ESM depuis un CDN -->
+  <!-- Import map : Three.js vendoré localement (aucune dépendance CDN) -->
   <script type="importmap">
   {
     "imports": {
-      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      "three": "./js/vendor/three.module.js"
     }
   }
   </script>
