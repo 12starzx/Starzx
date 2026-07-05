@@ -1,0 +1,19 @@
+{
+  "name": "merchant-agent",
+  "version": "0.1.0",
+  "description": "Agent IA pour commerçants — assistant client avec prise de réservations et commandes (API Claude)",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.110.0",
+    "express": "^4.21.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "private": true
+}

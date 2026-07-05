@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Assistant — chat</title>
+<style>
+  :root {
+    --bg: #f6f3ee;
+    --panel: #ffffff;
+    --accent: #b4552d;
+    --accent-soft: #f3e2d8;
+    --ink: #2b2620;
+    --muted: #8a8175;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    background: var(--bg);
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+  }
+  header {
+    padding: 14px 20px;
+    background: var(--panel);
+    border-bottom: 1px solid #e6ded2;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  header h1 { font-size: 1.15rem; margin: 0; font-weight: 600; }
+  header .sub { color: var(--muted); font-size: 0.85rem; font-style: italic; }
+  header a { margin-left: auto; color: var(--muted); font-size: 0.8rem; }
+  #chat {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 760px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .msg {
+    max-width: 82%;
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    line-height: 1.45;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .msg.user {
+    align-self: flex-end;
+    background: var(--accent);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+  }
+  .msg.bot {
+    align-self: flex-start;
+    background: var(--panel);
+    border: 1px solid #e6ded2;
+    border-bottom-left-radius: 4px;
+  }
+  .msg.info {
+    align-self: center;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 0.8rem;
+    padding: 4px 12px;
+    border-radius: 999px;
+  }
+  .msg.error { align-self: center; background: #fdecec; color: #a33; font-size: 0.85rem; }
+  form {
+    display: flex;
+    gap: 10px;
+    padding: 14px 20px 18px;
+    max-width: 760px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  input[type="text"] {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid #ddd2c2;
+    border-radius: 999px;
+    font: inherit;
+    background: var(--panel);
+    outline: none;
+  }
+  input[type="text"]:focus { border-color: var(--accent); }
+  button {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font: inherit;
+    cursor: pointer;
+  }
+  button:disabled { opacity: 0.5; cursor: default; }
+  .typing { color: var(--muted); font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <h1 id="shop-name">Assistant</h1>
+  <span class="sub" id="shop-sub"></span>
+  <a href="/admin.html">espace commerçant</a>
+</header>
+
+<div id="chat"></div>
+
+<form id="form" autocomplete="off">
+  <input id="input" type="text" placeholder="Posez votre question…" maxlength="1000" />
+  <button id="send" type="submit">Envoyer</button>
+</form>
+
+<script>
+const chat = document.getElementById("chat");
+const form = document.getElementById("form");
+const input = document.getElementById("input");
+const sendBtn = document.getElementById("send");
+
+// Historique envoyé au serveur : [{role, content}] avec content en texte simple.
+const history = [];
+
+fetch("/api/config")
+  .then((r) => r.json())
+  .then((c) => {
+    document.getElementById("shop-name").textContent = c.nom;
+    document.getElementById("shop-sub").textContent = c.type + " — " + c.adresse;
+    addMsg("bot", `Bonjour ! Je suis l'assistant de ${c.nom}. Horaires, produits, commandes, réservations… comment puis-je vous aider ?`);
+  })
+  .catch(() => {});
+
+function addMsg(kind, text) {
+  const div = document.createElement("div");
+  div.className = "msg " + kind;
+  div.textContent = text;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+  return div;
+}
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = "";
+  sendBtn.disabled = true;
+
+  addMsg("user", text);
+  history.push({ role: "user", content: text });
+
+  const botDiv = addMsg("bot", "…");
+  botDiv.classList.add("typing");
+  let botText = "";
+
+  try {
+    const resp = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages: history })
+    });
+    if (!resp.ok || !resp.body) throw new Error("HTTP " + resp.status);
+
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split("\n");
+      buffer = lines.pop(); // ligne incomplète éventuelle
+      for (const line of lines) {
+        if (!line.trim()) continue;
+        const evt = JSON.parse(line);
+        if (evt.type === "text") {
+          botText += evt.text;
+          botDiv.classList.remove("typing");
+          botDiv.textContent = botText;
+          chat.scrollTop = chat.scrollHeight;
+        } else if (evt.type === "tool") {
+          addMsg("info", evt.name === "creer_reservation" ? "📅 Réservation en cours d'enregistrement…" : "🧾 Commande en cours d'enregistrement…");
+        } else if (evt.type === "error") {
+          botDiv.remove();
+          addMsg("error", evt.message);
+        }
+      }
+    }
+
+    if (botText) {
+      history.push({ role: "assistant", content: botText });
+    } else {
+      botDiv.remove();
+    }
+  } catch (err) {
+    botDiv.remove();
+    addMsg("error", "Connexion impossible au serveur. Réessayez.");
+  } finally {
+    sendBtn.disabled = false;
+    input.focus();
+  }
+});
+</script>
+</body>
+</html>

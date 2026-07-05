@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Espace commerçant</title>
+<style>
+  :root { --bg:#f6f3ee; --panel:#fff; --accent:#b4552d; --ink:#2b2620; --muted:#8a8175; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: Georgia, serif; background:var(--bg); color:var(--ink); }
+  header { padding:14px 20px; background:var(--panel); border-bottom:1px solid #e6ded2; display:flex; align-items:baseline; gap:12px; }
+  header h1 { font-size:1.15rem; margin:0; }
+  header a { margin-left:auto; color:var(--muted); font-size:0.8rem; }
+  main { max-width: 900px; margin: 0 auto; padding: 24px 20px; }
+  h2 { font-size: 1rem; color: var(--accent); border-bottom: 1px solid #e6ded2; padding-bottom: 6px; }
+  .empty { color: var(--muted); font-style: italic; font-size: 0.9rem; }
+  table { width:100%; border-collapse: collapse; background: var(--panel); font-size: 0.9rem; margin-bottom: 28px; }
+  th, td { text-align:left; padding: 8px 10px; border-bottom: 1px solid #eee5d8; vertical-align: top; }
+  th { background:#faf6ef; font-weight:600; }
+  td.small { color: var(--muted); font-size: 0.8rem; white-space: nowrap; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Espace commerçant <span id="shop"></span></h1>
+  <a href="/">← retour au chat</a>
+</header>
+<main>
+  <h2>Réservations</h2>
+  <div id="reservations"></div>
+  <h2>Commandes</h2>
+  <div id="commandes"></div>
+</main>
+
+<script>
+fetch("/api/config").then(r=>r.json()).then(c => {
+  document.getElementById("shop").textContent = "— " + c.nom;
+});
+
+function renderTable(container, rows, columns) {
+  if (!rows.length) {
+    container.innerHTML = '<p class="empty">Aucune entrée pour le moment.</p>';
+    return;
+  }
+  const table = document.createElement("table");
+  table.innerHTML =
+    "<tr>" + columns.map(c => `<th>${c.label}</th>`).join("") + "</tr>";
+  for (const row of rows.slice().reverse()) {
+    const tr = document.createElement("tr");
+    for (const col of columns) {
+      const td = document.createElement("td");
+      if (col.small) td.className = "small";
+      td.textContent = col.value(row) ?? "";
+      tr.appendChild(td);
+    }
+    table.appendChild(tr);
+  }
+  container.innerHTML = "";
+  container.appendChild(table);
+}
+
+const fmtDate = (iso) => iso ? new Date(iso).toLocaleString("fr-FR") : "";
+
+fetch("/api/reservations").then(r=>r.json()).then(rows => {
+  renderTable(document.getElementById("reservations"), rows, [
+    { label: "Reçue le", value: r => fmtDate(r.cree_le), small: true },
+    { label: "Nom", value: r => r.nom },
+    { label: "Téléphone", value: r => r.telephone },
+    { label: "Date", value: r => r.date },
+    { label: "Heure", value: r => r.heure },
+    { label: "Pers.", value: r => r.nb_personnes },
+    { label: "Notes", value: r => r.notes }
+  ]);
+});
+
+fetch("/api/commandes").then(r=>r.json()).then(rows => {
+  renderTable(document.getElementById("commandes"), rows, [
+    { label: "Reçue le", value: r => fmtDate(r.cree_le), small: true },
+    { label: "Nom", value: r => r.nom },
+    { label: "Téléphone", value: r => r.telephone },
+    { label: "Articles", value: r => (r.articles || []).map(a => `${a.quantite}× ${a.produit}`).join(", ") },
+    { label: "Retrait", value: r => r.date_retrait },
+    { label: "Notes", value: r => r.notes }
+  ]);
+});
+</script>
+</body>
+</html>

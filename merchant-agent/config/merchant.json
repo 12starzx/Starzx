@@ -1,0 +1,40 @@
+{
+  "nom": "Boulangerie Le Fournil Doré",
+  "type": "boulangerie-pâtisserie",
+  "description": "Boulangerie artisanale au cœur de Lyon : pains au levain, viennoiseries pur beurre et pâtisseries maison. Nous proposons aussi des commandes de gâteaux personnalisés pour les événements.",
+  "adresse": "12 rue de la République, 69002 Lyon",
+  "telephone": "04 72 00 00 00",
+  "horaires": {
+    "lundi": "fermé",
+    "mardi": "6h30 – 19h30",
+    "mercredi": "6h30 – 19h30",
+    "jeudi": "6h30 – 19h30",
+    "vendredi": "6h30 – 19h30",
+    "samedi": "6h30 – 19h30",
+    "dimanche": "7h00 – 13h00"
+  },
+  "produits": [
+    { "nom": "Baguette tradition", "prix": "1,30 €", "description": "Farine label rouge, levain naturel" },
+    { "nom": "Pain au levain 500g", "prix": "3,80 €", "description": "Fermentation lente 24h" },
+    { "nom": "Croissant pur beurre", "prix": "1,40 €", "description": "Beurre AOP Charentes-Poitou" },
+    { "nom": "Pain au chocolat", "prix": "1,50 €", "description": "Deux barres de chocolat noir" },
+    { "nom": "Tarte aux fruits (6 pers.)", "prix": "24,00 €", "description": "Fruits de saison, sur commande 48h à l'avance" },
+    { "nom": "Gâteau personnalisé", "prix": "à partir de 35,00 €", "description": "Sur commande 72h à l'avance, décor au choix" }
+  ],
+  "faq": [
+    {
+      "question": "Faites-vous des produits sans gluten ?",
+      "reponse": "Nous proposons un pain sarrasin sans gluten le mercredi et le samedi, mais notre fournil manipule de la farine de blé : il peut y avoir des traces."
+    },
+    {
+      "question": "Peut-on payer par carte ?",
+      "reponse": "Oui, carte acceptée sans minimum. Tickets restaurant acceptés pour le snacking."
+    },
+    {
+      "question": "Livrez-vous ?",
+      "reponse": "Pas de livraison aux particuliers, mais nous livrons les professionnels du 2e arrondissement pour les commandes de plus de 30 €."
+    }
+  ],
+  "instructions_supplementaires": "Pour les gâteaux personnalisés, toujours demander la date de l'événement, le nombre de personnes et les allergies éventuelles avant d'enregistrer la commande.",
+  "ton": "chaleureux et professionnel, tutoiement interdit (toujours vouvoyer)"
+}
